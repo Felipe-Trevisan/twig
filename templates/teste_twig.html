@@ -1,6 +1,6 @@
 <h1>Twig funcionando</h1>
 
-<p>Olá {{ nome }}. corta cabelo?</p>
+<p>Olá {{ nome|upper }}. corta cabelo?</p>
 <p>
     {% if legal %}
     E só o cabo você vende?
@@ -15,3 +15,4 @@
         {% endfor %}
     </ul>
 </p>
+<p>{{ poema|nl2br }}</p>
