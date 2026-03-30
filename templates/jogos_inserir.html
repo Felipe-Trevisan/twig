@@ -1,38 +1,23 @@
-    {% extends "_base.html" %}
-    {% block conteudo %}
+{% extends "_base.html" %} {% block conteudo %}
+<h3>Inserir Jogos</h3>
+<hr>
+<br>
+{% if erro %}
+<img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2Z5ejBlMDQ0amY0c2p4NWFwMnl2ZHN3dW9tM2wwczIxcXFuYWI0ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10NNJitHXAZnqw/200.gif" alt="">
+<p style="color:red">{{ erro }}</p>
+<img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2Z5ejBlMDQ0amY0c2p4NWFwMnl2ZHN3dW9tM2wwczIxcXFuYWI0ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10NNJitHXAZnqw/200.gif" alt="">
 
-    <h3>Inserir Jogo</h3>
-
-    {% if erro %}
-    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2gwdGh1ZnFzbG1zNWwxdTBtZjJsM243eTNyMHJobzlhMm1leHAxeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/10NNJitHXAZnqw/giphy.gif" alt="">
-    <p>{{ erro }}</p>
-    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2gwdGh1ZnFzbG1zNWwxdTBtZjJsM243eTNyMHJobzlhMm1leHAxeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/10NNJitHXAZnqw/giphy.gif" alt="">
-    {% endif %}
-
-    <form action="jogos_inserir.php" method="post">
-        <input type="text" name="nome" placeholder="Nome">
-        <br>
-        Estilo: <select name="estilo">
-            <option value="acao">Ação</option>
-            <option value="tiro">Tiro</option>
-            <option value="rpg">RPG</option>
-        </select>
-        <br>
-        Capa: <input type="file" name="capa">
-        <br>
-        <input type="submit" value="Gravar">
-
-    </form>
-
-
-
-
-
-
-
-
-
-
-    <a href="jogos.php">❤️‍🩹</a>
-
-    {% endblock %}
+{% endif %}
+<form action="jogos_inserir.php" method="post" enctype="multipart/form-data">
+  <input type="text" name="nome" placeholder="Nome" />
+  Estilo:<select name="estilo">
+    <option value="acao">Ação</option>
+    <option value="tiro">Tiro</option>
+    <option value="rpg">RPG</option>
+  </select>
+  <br>
+  Capa: <input type="file" name="capa">
+  <br>
+  <input type="submit" value="Gravar">
+</form>
+{% endblock %}

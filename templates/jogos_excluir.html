@@ -1,0 +1,19 @@
+{% extends "_base.html" %} 
+
+{% block conteudo %}
+<h2>Excluir Jogo</h2>
+<h3>Você está excluindo o jogo {{ jogo.nome }}</h3>
+<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXVvZHVrdWMxdDhuZzhwcGh0OWpmdHY3eHk3czlxaTdyYnNlbjNjMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ygSevvOQY7a9uiXqi/giphy.gif" alt="">
+<br>
+Você tem certeza? não pode desfazer!
+<br>
+
+<div>
+<form action="jogos_excluir.php" method="post">
+<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmsyOXZlYzdmdGE5ZmhjZnl0dXg5bzZjZTM1dHBtN2Y5bDJ1dDEyaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AnUAceSSS6gZa/giphy.gif" alt="">
+<input type="hidden" name="id" value="{{ jogo.id }}">
+<input type="submit" value="Apagar para sempre" style="background-color: red; padding: 5px; font-size: 26px; color: white;">
+</form>
+<a href="jogos.php">Sou órfão</a>
+</div>
+{% endblock %}

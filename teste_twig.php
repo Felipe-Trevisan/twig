@@ -1,39 +1,56 @@
 <?php
 
-require('carregar_twig.php');
+require_once('carregar_twig.php');
 
-$nome = "Você";
+$nome = 'fulaninho';
+
+$poema = "Um Poema sobre o amor
+
+Quer seja curto ou comprido
+Quer seja fino ou mais grosso
+É um órgão muito querido
+Por não ter espinhas nem osso
+
+De incalculável valor
+Ninguém tem um a mais
+E desempenha no amor
+Um dos papéis principais
+
+Quando uma dama aparece
+Ei-lo a pular com fervor
+Se é um rapaz, estremece
+Se é velho, tem pouco vigor
+
+O seu nome não é tão feio
+Pois tem sete letrinhas só
+Tem um R e um A no meio
+Começa em C e acaba em O
+
+Nunca se encontra sozinho
+Vive sempre acompanhado
+Por outros dois orgãozinhos
+Junto de si, lado a lado
+
+O nome destes porém
+Não gera confusões
+Tem sete letras também
+Tem L e acaba em ÕES
+
+Prá acabar com o embalo
+E com as más impressões
+Os órgãos de que eu falo...
+São o CORAÇÃO e os PULMÕES.";
+
 $disciplinas = [
-    'PW',
-    'BD',
-    'IW',
-    'DS',
+    'Programação',
+    'Banco de Dados',
+    'Interface Web',
+    'Desenvolvimento de Sistemas',
 ];
 
-$poema = '
-No alto daquele cume,
-Plantei uma roseira.
-O vento no cume bate,
-A rosa no cume cheira.
- 
-Quando cai a chuva fina,
-Salpicos no cume caem.
-Formigas no cume entram,
-Abelhas do cume saem.
-
-Quando cai a chuva grossa,
-A água no cume desce.
-O barro no cume escorre,
-O mato no cume cresce.
-
-Então quando cessa a chuva,
-No cume volta a alegria.
-Pois torna a brilhar de novo
-O sol que no cume ardia.';
-
-echo $twig->render('teste_twig.html', [
-    'nome'=> $nome,
-    'legal' => true,
-    'disciplinas' => $disciplinas,
-    'poema'=> $poema,
+echo $twig->render('teste_twig.html',[
+    'nome'=>$nome,
+    'legal'=>true,
+    'disciplinas'=>$disciplinas,
+    'poema'=>$poema,
 ]);

@@ -1,6 +1,5 @@
 <?php
+require_once("vendor/autoload.php");
 
-require_once('vendor/autoload.php');
-
-$loader = new \Twig\Loader\FileSystemLoader('templates');
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/templates');
 $twig = new \Twig\Environment($loader);
