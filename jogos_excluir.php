@@ -26,7 +26,7 @@ $dados = $pdo->prepare('Select * from jogos where id = :id');
 $dados->execute([':id'=> $id]);
 
 if($dados->rowCount() != 1){
-    header('location:jogos;php');
+    header('location:jogos.php');
     die;
 }
 

@@ -1,0 +1,29 @@
+{% extends "_base.html" %} {% block conteudo %}
+<h3>Editar Jogos</h3>
+<hr>
+<br>
+{% if erro %}
+<img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2Z5ejBlMDQ0amY0c2p4NWFwMnl2ZHN3dW9tM2wwczIxcXFuYWI0ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10NNJitHXAZnqw/200.gif" alt="">
+<p style="color:red">{{ erro }}</p>
+<img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2Z5ejBlMDQ0amY0c2p4NWFwMnl2ZHN3dW9tM2wwczIxcXFuYWI0ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10NNJitHXAZnqw/200.gif" alt="">
+
+{% endif %}
+<form action="jogos_editar.php" method="post" enctype="multipart/form-data">
+  Nome do Jogo:<input type="text" name="nome" placeholder="Nome" value="{{ jogo.nome }}"/>
+  <br>
+  Estilo:<select name="estilo">
+    <option value="acao" {% if jogo.estilo == 'acao' %}selected{% endif %}>Ação</option>
+    <option value="tiro" {% if jogo.estilo == 'tiro' %}selected{% endif %}>Tiro</option>
+    <option value="rpg" {% if jogo.estilo == 'rpg' %}selected{% endif %}>RPG</option>
+  </select>
+  <br>
+  Capa: <input type="file" name="{{ jogo.capa }}" >
+  <br>
+  <br>
+  Imagem Atual da Capa: 
+  <br>
+  <img src="img/{{ jogo.capa }}" alt="">
+  <br>
+  <input type="submit" value="Gravar">
+</form>
+{% endblock %}
