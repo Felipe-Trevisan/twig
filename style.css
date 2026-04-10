@@ -1,981 +1,339 @@
 /* ==========================================================================
-   SMW-CSS: SUPER MARIO WORLD - 16-BIT EDITION 🍄⭐🦖
-   Versão: 1990.SNES | Foco: Cores Vibrantes, Plataforma, Animações e Magia
+   🍄 SMW-CSS RETRÔ: SUPER MARIO WORLD - ULTRA FLUID EDITION 🍄
+   Versão: Ultimate Retro Centralized | Foco: 60FPS, Cubic-Beziers, Molas e GPU
    ========================================================================== */
 
-/* ==========================================================================
-   [1] TOKENS & VARIABLES - MUSHROOM KINGDOM PALETTE
-   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Pixelify+Sans:wght@400;700&display=swap');
+
 :root {
-    /* O Mundo (Cenários e Natureza) */
-    --smw-sky: #5C94FC;           /* Azul clássico do céu da fase 1 */
-    --smw-cloud: #FFFFFF;         /* Nuvens fofas */
-    --smw-ground-top: #00A800;    /* Grama verde vibrante */
-    --smw-ground-dirt: #C84C0C;   /* Terra marrom avermelhada */
-    --smw-pipe-green: #00E800;    /* Verde neon fluorescente dos canos */
-    --smw-pipe-dark: #008800;     /* Sombra do cano */
+    /* 🌍 Cores do Mundo */
+    --smw-sky: #5C94FC;           
+    --smw-sky-dark: #3A72DA;      
+    --smw-cloud: #FFFFFF;         
+    --smw-ground-top: #00A800;    
+    --smw-ground-dirt: #C84C0C;   
+    --smw-pipe-green: #00E800;    
+    --smw-pipe-dark: #008800;     
     
-    /* Os Blocos e Itens */
-    --smw-coin-gold: #F8D820;     /* Moeda brilhante */
-    --smw-coin-shadow: #E88800;   /* Sombra da moeda */
-    --smw-brick-brown: #FC9838;   /* Tijolo base */
-    --smw-brick-dark: #B85800;    /* Sombra do tijolo */
-    --smw-question-yellow: #FCFC00; /* Bloco de interrogação */
-    --smw-star-yellow: #FFF858;   /* Estrela de invencibilidade */
+    /* 🧱 Blocos e Itens */
+    --smw-brick-brown: #FC9838;   
+    --smw-brick-dark: #B85800;    
+    --smw-question-yellow: #FCFC00; 
+    --smw-coin-gold: #F8D820;     
+    --smw-coin-shadow: #E88800;   
+    --smw-star-yellow: #FFF858;   
 
-    /* Os Heróis e Inimigos */
-    --mario-red: #F83800;         /* Chapéu e camisa */
-    --mario-blue: #0058F8;        /* Macacão */
-    --luigi-green: #00A800;       /* Luigi */
-    --yoshi-green: #58D854;       /* Yoshi claro */
-    --peach-pink: #F8B8F8;        /* Princesa Peach */
-    --bowser-orange: #F87800;     /* Fogo / Bowser */
-    --goomba-brown: #A05000;      /* Inimigos clássicos */
-
-    /* Interface (Status Bar SMW) */
-    --ui-bg: #000000;
+    /* 🍄 Heróis e UI */
+    --mario-red: #F83800;         
+    --mario-blue: #0058F8;        
+    --yoshi-green: #58D854;       
+    --peach-pink: #F8B8F8;        
+    --ui-danger: #E52521;         
+    --ui-success: #43B047;        
+    --ui-info: #049CD8;           
+    --ui-bg: rgba(0, 0, 0, 0.92);  
     --ui-text-white: #FFFFFF;
-    --ui-text-shadow: #555555;
-    --ui-border-gold: #F8D820;
     
-    /* Grid e Escala 16-bit */
-    --pixel: 4px;
-    --sp-1: calc(var(--pixel) * 2);   /* 8px */
-    --sp-2: calc(var(--pixel) * 4);   /* 16px */
-    --sp-3: calc(var(--pixel) * 6);   /* 24px */
-    --sp-4: calc(var(--pixel) * 8);   /* 32px */
-    --sp-5: calc(var(--pixel) * 10);  /* 40px */
-    --sp-6: calc(var(--pixel) * 12);  /* 48px */
-    --sp-8: calc(var(--pixel) * 16);  /* 64px */
+    /* 🔤 Tipografia */
+    --font-snes-title: 'Pixelify Sans', sans-serif;
+    --font-snes-text: 'VT323', monospace;
     
-    /* Tipografia 16-bit (Recomendado: 'Press Start 2P' ou 'VT323') */
-    --font-snes: 'Press Start 2P', monospace;
+    /* 📏 Espaçamentos */
+    --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; 
+    --sp-4: 32px; --sp-5: 40px; --sp-6: 48px;  
     
-    /* Z-Index */
-    --z-sky: -30;
-    --z-clouds: -20;
-    --z-ground: -10;
-    --z-base: 1;
-    --z-blocks: 10;
-    --z-sprites: 20;
-    --z-ui: 100;
+    /* 🥞 Z-Index Layers */
+    --z-clouds: -20; --z-ground: -10; --z-base: 1; --z-ui: 100; --z-modal: 1000;
+
+    /* 💫 FÍSICA E ANIMAÇÕES ULTRA-FLUIDAS (Novo!) */
+    --spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1); /* Efeito de mola elástica */
+    --smooth-glide: cubic-bezier(0.25, 1, 0.5, 1);      /* Deslizamento suave como gelo */
+    --snappy-pop: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Pulo rápido e seco */
 }
 
 /* ==========================================================================
-   [2] RESET & ENGINE BASE
-   ========================================================================== */
+   [2] RESET & ENGINE
+   ========================================================================= */
 *, *::before, *::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    image-rendering: pixelated; /* Crucial para o look de SNES */
+    margin: 0; padding: 0;
+    image-rendering: pixelated; 
+    image-rendering: crisp-edges;
 }
 
 html {
-    font-size: 16px;
-    background-color: var(--smw-sky);
-    scroll-behavior: smooth;
+    font-size: 16px; background-color: var(--smw-sky);
+    scroll-behavior: smooth; overflow-x: hidden;
 }
 
 body {
-    font-family: var(--font-snes);
-    background-color: var(--smw-sky);
-    color: var(--ui-text-white);
-    line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    text-transform: uppercase;
-    /* Cursor de luvinha do Mario (se tiver a imagem) ou fallback crosshair */
-    cursor: crosshair; 
-    padding-bottom: 120px; /* Espaço para o chão parallax */
+    font-family: var(--font-snes-text); font-size: 1.3rem; 
+    background: linear-gradient(180deg, var(--smw-sky) 0%, var(--smw-sky-dark) 100%);
+    background-attachment: fixed; color: var(--ui-text-white);
+    line-height: 1.5; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; 
+    text-transform: uppercase; cursor: crosshair;
+    padding-bottom: 150px; position: relative;
+    -webkit-font-smoothing: none; 
 }
+
+/* Scanlines suaves */
+body::after {
+    content: " "; display: block; position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    z-index: 9999; background-size: 100% 4px; pointer-events: none;
+}
+
+::selection { background-color: var(--smw-star-yellow); color: var(--mario-red); text-shadow: none; }
 
 /* ==========================================================================
-   [3] O MUNDO ANIMADO (Céu, Nuvens e Chão em CSS Puro)
-   ========================================================================== */
-
-/* As Nuvens Animadas Deslizando no Fundo */
+   [3] PARALLAX 60FPS
+   ========================================================================= */
 body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200vw;
-    height: 100vh;
-    z-index: var(--z-clouds);
-    pointer-events: none;
-    /* Desenhando nuvens 16-bit com radial-gradient */
+    content: ""; position: fixed; top: 0; left: 0;
+    width: 200vw; height: 100vh; z-index: var(--z-clouds); pointer-events: none;
     background-image: 
-        radial-gradient(circle at 50px 50px, var(--smw-cloud) 20px, transparent 21px),
-        radial-gradient(circle at 70px 60px, var(--smw-cloud) 30px, transparent 31px),
-        radial-gradient(circle at 100px 50px, var(--smw-cloud) 20px, transparent 21px);
-    background-size: 400px 200px;
-    animation: scroll-clouds 40s linear infinite;
-    opacity: 0.8;
+        radial-gradient(circle at 100px 100px, rgba(255,255,255,0.95) 40px, transparent 41px),
+        radial-gradient(circle at 140px 120px, rgba(255,255,255,0.95) 60px, transparent 61px),
+        radial-gradient(circle at 200px 100px, rgba(255,255,255,0.95) 40px, transparent 41px),
+        radial-gradient(circle at 500px 300px, rgba(255,255,255,0.7) 30px, transparent 31px),
+        radial-gradient(circle at 540px 320px, rgba(255,255,255,0.7) 40px, transparent 41px);
+    background-size: 800px 600px;
+    animation: scroll-clouds 60s linear infinite;
+    will-change: transform; /* Aceleração de GPU para as nuvens */
+    transform: translateZ(0);
 }
 
-/* O Chão de Blocos Clássico do Mario */
-body::after {
-    content: "";
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
-    height: 64px;
-    z-index: var(--z-ground);
+.chao-retro {
+    position: fixed; bottom: 0; left: 0;
+    width: 100vw; height: 80px; z-index: var(--z-ground);
     background-color: var(--smw-ground-dirt);
     background-image: 
         linear-gradient(45deg, var(--smw-ground-top) 25%, transparent 25%, transparent 75%, var(--smw-ground-top) 75%, var(--smw-ground-top)), 
         linear-gradient(45deg, var(--smw-ground-top) 25%, transparent 25%, transparent 75%, var(--smw-ground-top) 75%, var(--smw-ground-top));
-    background-size: 32px 32px;
-    background-position: 0 0, 16px 16px;
-    border-top: calc(var(--pixel) * 2) solid var(--smw-ground-top);
-    box-shadow: inset 0 8px 0 rgba(0,0,0,0.2); /* Sombra do gramado */
+    background-size: 40px 40px; background-position: 0 0, 20px 20px;
+    border-top: 8px solid var(--smw-ground-top);
+    box-shadow: inset 0 16px 0 rgba(0,0,0,0.4), 0 -8px 25px rgba(0,0,0,0.5);
+    will-change: transform;
 }
 
 /* ==========================================================================
-   [4] TYPOGRAPHY & UI TEXT (Sombra Dura 16-bit)
-   ========================================================================== */
-h1, h2, h3, h4, h5, h6 {
-    color: var(--ui-text-white);
-    margin-bottom: var(--sp-3);
-    /* Sombra preta dura caindo para a direita/baixo típica do SMW */
-    text-shadow: calc(var(--pixel) * 1) calc(var(--pixel) * 1) 0 var(--ui-text-shadow);
-    line-height: 1.3;
-    letter-spacing: 2px;
-}
+   [4] TYPOGRAPHY & ICONS DYNAMICS
+   ========================================================================= */
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-snes-title); color: var(--ui-text-white); text-align: center; text-shadow: 4px 4px 0 #000; line-height: 1.2; letter-spacing: 2px; width: 100%; margin-bottom: var(--sp-3); }
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--smw-coin-gold); text-shadow: 6px 6px 0 #000, 0 0 30px rgba(248, 216, 32, 0.5); animation: float-title 4s ease-in-out infinite; margin-top: var(--sp-4); will-change: transform; }
+h2 { font-size: clamp(2rem, 5vw, 3.5rem); color: var(--smw-cloud); border-bottom: 6px dashed var(--smw-coin-gold); padding-bottom: var(--sp-2); display: inline-block; width: auto;}
+h3 { font-size: clamp(1.7rem, 4vw, 2.5rem); color: var(--yoshi-green); }
 
-h1 { font-size: 2.5rem; color: var(--smw-coin-gold); text-align: center; animation: coin-bounce-text 2s infinite; }
-h2 { font-size: 2rem; color: var(--mario-red); text-shadow: calc(var(--pixel) * 1) calc(var(--pixel) * 1) 0 #000; }
-h3 { font-size: 1.5rem; color: var(--yoshi-green); }
-h4 { font-size: 1.25rem; color: var(--peach-pink); }
+p { font-family: var(--font-snes-text); font-size: 1.3rem; color: #FFF; text-shadow: 3px 3px 0 #000; margin-bottom: var(--sp-3); line-height: 1.6; text-align: center; max-width: 800px; }
 
-p {
-    font-size: 1rem;
-    color: #FFF; /* Texto branco puro sobre os blocos */
-    text-shadow: 2px 2px 0 #000; /* Legibilidade perfeita */
-    margin-bottom: var(--sp-3);
-    line-height: 1.8;
-}
+a { color: var(--smw-coin-gold); text-decoration: none; transition: all 0.3s var(--smooth-glide); display: inline-block; text-align: center; will-change: transform; }
+a:hover { color: var(--smw-cloud); transform: translateY(-4px) scale(1.08); text-shadow: 0 0 15px var(--smw-coin-gold); }
 
-a {
-    color: var(--smw-question-yellow);
-    text-decoration: none;
-    border-bottom: 2px dashed var(--smw-question-yellow);
-    transition: all 0.2s;
+.smw-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-style: normal; font-family: "Segoe UI Emoji", sans-serif;
+    line-height: 1; filter: drop-shadow(3px 3px 0px rgba(0,0,0,0.9));
+    transform: translateY(3px); margin-right: 0.5rem;
+    transition: transform 0.4s var(--spring-bounce);
+    will-change: transform;
 }
+.smw-icon:hover { transform: translateY(-6px) scale(1.4); animation: icon-wiggle 0.6s var(--smooth-glide) infinite; }
 
-a:hover {
-    color: var(--mario-red);
-    border-bottom-color: var(--mario-red);
-    background-color: var(--smw-coin-gold);
-    text-shadow: none;
-    padding: 0 4px;
-}
-
-::selection {
-    background-color: var(--smw-star-yellow);
-    color: var(--mario-red);
-}
+.icon-star::before { content: "⭐"; animation: star-power-flash 0.4s infinite steps(2); }
+.icon-fireflower::before { content: "🌻"; filter: drop-shadow(3px 3px 0px #000) hue-rotate(-20deg) saturate(2); }
+.icon-coin::before { content: "🪙"; animation: coin-spin 0.8s infinite cubic-bezier(0.4, 0, 0.2, 1); }
+.icon-boo::before { content: "👻"; filter: drop-shadow(3px 3px 0px rgba(0,0,0,0.6)); animation: float-ghost 3s infinite ease-in-out; }
+.icon-edit::before { content: "✏️"; } .icon-delete::before { content: "🗑️"; }
+.icon-add::before { content: "➕"; } .icon-save::before { content: "💾"; }
 
 /* ==========================================================================
-   [5] IMAGENS: O BLOCO DE ITEM (Ajustado e Decorado)
-   Tamanho fixo com moldura de bloco que pula no hover!
+   [5] LAYOUT & HUD
    ========================================================================== */
-img, picture, svg, video {
-    display: block;
-    width: 256px !important; /* Tamanho ajustado para sprites grandes */
-    height: 224px !important; /* Aspect ratio próximo ao da tela do SNES */
-    object-fit: cover !important;
-    object-position: center;
-    image-rendering: pixelated;
-    
-    /* Moldura imitando um Bloco de Tijolo */
-    background-color: var(--smw-brick-brown);
-    border: calc(var(--pixel) * 1.5) solid #000 !important;
-    outline: calc(var(--pixel) * 2) solid var(--smw-brick-brown) !important;
-    box-shadow: 
-        inset -4px -4px 0 var(--smw-brick-dark),
-        inset 4px 4px 0 #FFD090, /* Brilho superior esquerdo do bloco */
-        8px 8px 0 rgba(0,0,0,0.5); /* Sombra projetada do bloco flutuante */
-        
-    margin: var(--sp-5) auto;
-    transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
-    position: relative;
-    z-index: var(--z-sprites);
-}
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: var(--sp-4); position: relative; z-index: var(--z-base); display: flex; flex-direction: column; align-items: center; }
 
-/* Efeito de bater no bloco por baixo */
-img:hover {
-    transform: translateY(calc(var(--pixel) * -3)); /* Pula pra cima */
-    box-shadow: 
-        inset -4px -4px 0 var(--smw-brick-dark),
-        inset 4px 4px 0 #FFD090,
-        8px 20px 0 rgba(0,0,0,0.5); /* Sombra afasta mais */
-    outline-color: var(--smw-question-yellow) !important; /* Vira bloco de interrogação! */
+.snes-hud {
+    background-color: #000; box-shadow: 0 10px 0 #000, 0 10px 25px rgba(0,0,0,0.7);
+    padding: var(--sp-3) var(--sp-5); display: flex; justify-content: center; gap: var(--sp-6);
+    align-items: center; position: sticky; top: 0; z-index: var(--z-ui); border-bottom: 6px solid var(--mario-red); width: 100%; margin-bottom: var(--sp-6);
+    transform: translateZ(0); /* Força a renderização no topo na GPU */
 }
-
-/* Efeito extra animado de moeda saindo do bloco no hover (usando wrapper ou pseudo, mas como img não aceita pseudo, faremos uma classe wrapper se precisar, ou via animação de borda) */
+.hud-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.hud-title { font-family: var(--font-snes-title); font-size: 1.1rem; color: #AAA; }
+.hud-value { font-family: var(--font-snes-text); font-size: 2rem; color: var(--ui-text-white); text-shadow: 2px 2px 0 #000; }
+.hud-coins .hud-value::before { content: "x"; font-size: 1.5rem; color: var(--smw-coin-gold); margin-right: 4px; }
+.hud-world .hud-value { color: var(--yoshi-green); }
 
 /* ==========================================================================
-   [6] CONTAINERS & CARDS (Os Blocos Mágicos e Canos)
+   [6] CARDS EXPANSIVOS E ULTRA-FLUIDOS
    ========================================================================== */
-
-/* O Container Padrão (Caixa de Texto estilo HUD do Mario) */
-.card, .panel, .mario-container {
-    background-color: var(--ui-bg);
-    color: var(--ui-text-white);
-    padding: var(--sp-4);
-    margin-bottom: var(--sp-4);
-    position: relative;
-    border: calc(var(--pixel) * 1) solid var(--ui-border-gold);
-    border-radius: calc(var(--pixel) * 2);
-    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
-    z-index: var(--z-blocks);
+.jogos-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--sp-5);
+    margin-top: var(--sp-4); width: 100%; max-width: 1100px; justify-content: center; align-items: start;
 }
 
-/* Bloco de Interrogação Animado (?) */
-.card-question {
-    background-color: var(--smw-question-yellow);
-    border: calc(var(--pixel) * 1) solid #000;
-    box-shadow: 
-        inset -8px -8px 0 var(--smw-coin-shadow),
-        inset 8px 8px 0 #FFFF88,
-        8px 8px 0 rgba(0,0,0,0.4);
-    animation: question-block-flash 1s infinite steps(3);
-    color: #000; /* Texto preto para ler no amarelo */
-}
-.card-question p, .card-question h2, .card-question h3 {
-    color: #000; text-shadow: none;
+.jogo-card {
+    background-color: var(--ui-bg); border: 6px solid #000; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; align-items: center; 
+    box-shadow: inset 0 0 0 4px var(--smw-brick-brown), 8px 8px 0 rgba(0,0,0,0.7);
+    transition: transform 0.5s var(--spring-bounce), box-shadow 0.5s var(--smooth-glide);
+    position: relative; text-align: center;
+    will-change: transform, box-shadow; /* GPU ativa para o card inteiro */
 }
 
-/* O Famoso Cano Verde (Warp Pipe) */
-.card-pipe {
-    background: linear-gradient(to right, 
-        var(--smw-pipe-dark) 0%, 
-        var(--smw-pipe-green) 20%, 
-        #A8FFA8 40%, /* Reflexo brilhante */
-        var(--smw-pipe-green) 60%, 
-        var(--smw-pipe-dark) 100%);
-    border: calc(var(--pixel) * 1) solid #000;
-    border-top: calc(var(--pixel) * 4) solid #000; /* Borda grossa em cima imitando a boca do cano */
-    border-radius: 0;
-    color: #FFF;
+.jogo-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: inset 0 0 0 4px var(--smw-star-yellow), 15px 25px 0 rgba(0,0,0,0.6), 0 0 35px rgba(255, 248, 88, 0.4);
+    z-index: 10;
 }
-.card-pipe::before {
-    content: "";
-    position: absolute;
-    top: calc(var(--pixel) * -4);
-    left: calc(var(--pixel) * -2);
-    right: calc(var(--pixel) * -2);
-    height: calc(var(--pixel) * 8);
-    background: inherit;
-    border: calc(var(--pixel) * 1) solid #000;
+
+.jogo-capa {
+    width: 100%; height: 280px; background-color: #000; border-bottom: 6px solid #000; position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center;
+    transition: height 0.6s var(--spring-bounce), padding 0.6s var(--smooth-glide); /* Altura orgânica */
+    background-image: linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111), linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111);
+    background-size: 16px 16px; background-position: 0 0, 8px 8px;
+    will-change: height;
 }
+
+.jogo-capa img {
+    width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated;
+    transition: transform 0.6s var(--spring-bounce), object-fit 0.3s;
+    will-change: transform;
+}
+
+.jogo-card:hover .jogo-capa { height: 440px; padding: var(--sp-2); }
+.jogo-card:hover .jogo-capa img {
+    object-fit: contain; transform: scale(1.08); /* Efeito de mola no zoom */
+    filter: drop-shadow(8px 8px 0 rgba(0,0,0,0.9)); 
+}
+
+.jogo-info { padding: var(--sp-4); flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; }
+.jogo-titulo { font-size: 1.6rem; color: var(--smw-cloud); margin-bottom: var(--sp-1); word-break: break-word; text-align: center; }
+.jogo-estilo { color: var(--smw-coin-gold); font-size: 1.2rem; margin-bottom: var(--sp-4); background: rgba(0,0,0,0.6); padding: 6px 12px; border-radius: 4px; border: 2px dashed var(--smw-coin-gold); transition: transform 0.3s var(--spring-bounce); }
+.jogo-card:hover .jogo-estilo { transform: scale(1.1); } /* Destaque extra no hover */
+
+.jogo-acoes { display: flex; gap: var(--sp-3); margin-top: auto; padding-top: var(--sp-3); border-top: 3px dashed rgba(255,255,255,0.2); width: 100%; justify-content: center; }
 
 /* ==========================================================================
-   [7] LISTAS: MOEDAS E FIRE FLOWERS
-   ========================================================================== */
-ul.coin-list {
-    list-style: none;
-    padding-left: var(--sp-4);
-}
-
-ul.coin-list li {
-    position: relative;
-    margin-bottom: var(--sp-2);
-    padding-left: var(--sp-5);
-}
-
-/* A Moeda Giratória 16-bit feita em CSS */
-ul.coin-list li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 24px;
-    background-color: var(--smw-coin-gold);
-    border: 2px solid #000;
-    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; /* Formato oval de moeda */
-    box-shadow: inset -4px 0 0 var(--smw-coin-shadow);
-    animation: coin-spin 0.8s infinite steps(4);
-}
-
-/* ==========================================================================
-   [8] BUTTONS (P-Switches e Blocos ON/OFF)
-   ========================================================================== */
+   [7] BOTÕES (Física Snappy)
+   ========================================================================= */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--sp-2);
-    font-family: var(--font-snes);
-    font-size: 1rem;
-    text-transform: uppercase;
-    padding: var(--sp-3) var(--sp-5);
-    cursor: pointer;
-    user-select: none;
-    text-align: center;
-    position: relative;
-    
-    /* Estilo Base: Botão de Ação Vermelho (Estilo A/B do controle do SNES) */
-    background-color: var(--mario-red);
-    color: #FFF;
-    border: 3px solid #000;
-    border-radius: 20px;
-    box-shadow: 
-        inset -4px -4px 0 #880000,
-        inset 4px 4px 0 #FF8888,
-        4px 4px 0 rgba(0,0,0,0.5);
-    text-shadow: 2px 2px 0 #000;
-    transition: transform 0.1s, box-shadow 0.1s, filter 0.1s;
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); font-family: var(--font-snes-title); font-size: 1.3rem; padding: var(--sp-2) var(--sp-4); cursor: pointer; text-decoration: none; border: 4px solid #000; border-radius: 4px; box-shadow: 6px 6px 0 rgba(0,0,0,0.8);
+    transition: transform 0.3s var(--spring-bounce), box-shadow 0.3s var(--smooth-glide), filter 0.3s;
+    position: relative; will-change: transform;
 }
 
-.btn:active {
-    transform: translate(4px, 4px);
-    box-shadow: inset -2px -2px 0 #880000, inset 2px 2px 0 #FF8888, 0 0 0 transparent;
-}
+/* O clique afunda com velocidade realista */
+.btn:active { transform: translate(6px, 6px) scale(0.95) !important; box-shadow: 0px 0px 0 rgba(0,0,0,0.8) !important; filter: brightness(0.8); transition: all 0.1s; }
+.btn:hover { transform: translateY(-6px) scale(1.02); filter: brightness(1.2); box-shadow: 8px 12px 0 rgba(0,0,0,0.6); }
 
-.btn:hover {
-    filter: brightness(1.2);
-}
-
-/* O P-Switch Azul! */
-.btn-p-switch {
-    background-color: var(--mario-blue);
-    border-radius: 50%; /* Redondo! */
-    width: 120px;
-    height: 120px;
-    padding: 0;
-    box-shadow: inset -8px -8px 0 #002288, inset 8px 8px 0 #66AAFF, 8px 8px 0 rgba(0,0,0,0.5);
-    font-size: 2rem;
-    animation: pulse-switch 2s infinite;
-}
-.btn-p-switch::after {
-    content: "P";
-    font-size: 3rem;
-    color: #FFF;
-}
-.btn-p-switch:active {
-    height: 40px; /* Amassa quando pisa! */
-    transform: translateY(80px); /* Desce para o chão */
-    border-radius: 20px;
-    animation: none;
-}
-
-/* Bloco ON/OFF */
-.btn-on-off {
-    background-color: #F83800; /* Começa ON (Vermelho) */
-    border-radius: 0;
-    box-shadow: inset -4px -4px 0 #880000, inset 4px 4px 0 #FF8888, 4px 4px 0 rgba(0,0,0,0.5);
-}
-.btn-on-off::before { content: "ON"; }
-.btn-on-off:active { background-color: #0058F8; box-shadow: inset -4px -4px 0 #002288, inset 4px 4px 0 #66AAFF; }
-.btn-on-off:active::before { content: "OFF"; }
+.btn-primary { background-color: var(--mario-red); color: #FFF; box-shadow: inset -4px -4px 0 #990000, inset 4px 4px 0 #FF9999, 6px 6px 0 rgba(0,0,0,0.8); text-shadow: 3px 3px 0 #000; }
+.btn-secondary { background-color: var(--mario-blue); color: #FFF; box-shadow: inset -4px -4px 0 #0033AA, inset 4px 4px 0 #77CCFF, 6px 6px 0 rgba(0,0,0,0.8); text-shadow: 3px 3px 0 #000; }
+.btn-success { background-color: var(--ui-success); color: #FFF; box-shadow: inset -4px -4px 0 #1D661F, inset 4px 4px 0 #88FF8D, 6px 6px 0 rgba(0,0,0,0.8); text-shadow: 3px 3px 0 #000; }
+.btn-warning { background-color: var(--smw-coin-gold); color: #000; border-color: #000; box-shadow: inset -4px -4px 0 var(--smw-coin-shadow), inset 4px 4px 0 #FFFFBB, 6px 6px 0 rgba(0,0,0,0.8); text-shadow: none; }
+.btn-danger { background-color: var(--ui-danger); color: #FFF; box-shadow: inset -4px -4px 0 #990F0D, inset 4px 4px 0 #FF8D8A, 6px 6px 0 rgba(0,0,0,0.8); text-shadow: 3px 3px 0 #000; }
 
 /* ==========================================================================
-   [9] FORMS & INPUTS (Campos de Status)
-   ========================================================================== */
-.form-group {
-    margin-bottom: var(--sp-4);
-    display: flex;
-    flex-direction: column;
-}
-
-.form-label {
-    color: var(--smw-coin-gold);
-    margin-bottom: var(--sp-2);
-    font-size: 0.8rem;
-    text-shadow: 2px 2px 0 #000;
-}
+   [8] FORMULÁRIOS & INPUTS
+   ========================================================================= */
+.form-crud { display: flex; flex-direction: column; gap: var(--sp-4); background: rgba(0,0,0,0.8); padding: var(--sp-5); border-radius: 8px; border: 4px dashed var(--smw-coin-gold); width: 100%; max-width: 700px; align-items: center; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.form-group { display: flex; flex-direction: column; gap: var(--sp-1); width: 100%; align-items: center; }
+.form-label { font-family: var(--font-snes-title); font-size: 1.4rem; color: var(--smw-cloud); text-shadow: 3px 3px 0 #000; transition: transform 0.3s ease;}
 
 .form-control {
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #FFF;
-    font-family: var(--font-snes);
-    font-size: 1.2rem;
-    padding: var(--sp-3);
-    border: calc(var(--pixel) * 1) solid var(--smw-brick-brown);
-    outline: none;
-    text-transform: uppercase;
-    box-shadow: inset 4px 4px 0 rgba(0,0,0,0.8);
-    transition: all 0.2s;
+    font-family: var(--font-snes-text); font-size: 1.4rem; padding: var(--sp-3);
+    background-color: rgba(0, 0, 0, 0.9); color: var(--smw-star-yellow);
+    border: 4px solid var(--smw-brick-dark); border-radius: 4px; outline: none;
+    box-shadow: inset 6px 6px 12px rgba(0,0,0,0.9); width: 100%; max-width: 600px; text-align: center; 
+    transition: all 0.4s var(--spring-bounce); will-change: transform, box-shadow;
 }
 
 .form-control:focus {
-    border-color: var(--smw-star-yellow);
-    background-color: rgba(0, 0, 0, 0.9);
-    box-shadow: inset 4px 4px 0 rgba(0,0,0,0.8), 0 0 15px var(--smw-star-yellow);
+    border-color: var(--smw-coin-gold); background-color: #000;
+    box-shadow: inset 6px 6px 12px rgba(0,0,0,0.9), 0 0 25px rgba(248, 216, 32, 0.6); 
+    transform: scale(1.04) translateY(-2px); /* Efeito de destaque elástico ao digitar */
 }
+.form-group:focus-within .form-label { transform: translateY(-4px); color: var(--smw-coin-gold); }
+
+.form-file-wrapper { position: relative; overflow: hidden; display: inline-flex; width: 100%; max-width: 600px; }
+.form-file-wrapper input[type="file"] { font-size: 150px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
+
+.file-custom-btn {
+    display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+    background-color: var(--smw-pipe-dark); color: #FFF; padding: var(--sp-4);
+    border: 4px dashed var(--smw-pipe-green); border-radius: 4px; font-family: var(--font-snes-text);
+    font-size: 1.4rem; width: 100%; box-shadow: 6px 6px 0 rgba(0,0,0,0.8); 
+    transition: all 0.4s var(--spring-bounce); will-change: transform;
+}
+.form-file-wrapper:hover .file-custom-btn { background-color: var(--smw-pipe-green); border-color: #FFF; color: #000; text-shadow: none; transform: translateY(-6px) scale(1.02); box-shadow: 8px 12px 0 rgba(0,0,0,0.7); }
+
+.capa-preview { margin-top: var(--sp-3); width: 220px; border: 4px solid var(--smw-coin-gold); box-shadow: 6px 6px 0 #000; transition: transform 0.4s var(--spring-bounce); }
+.capa-preview:hover { transform: scale(1.1) rotate(-2deg); }
 
 /* ==========================================================================
-   [10] BARRAS DE PROGRESSO (A Barra do Fim da Fase)
-   ========================================================================== */
-.progress-container {
-    width: 100%;
-    height: 32px;
-    background-color: #000;
-    border: calc(var(--pixel) * 1) solid #FFF;
-    position: relative;
-    margin-bottom: var(--sp-4);
-    box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
-}
-
-/* A barrinha enchendo com as cores da Star Road */
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #F83800, #F8D820, #00A800, #0058F8, #F8B8F8);
-    background-size: 200% 100%;
-    width: 50%; /* Altere inline */
-    animation: star-road-gradient 2s linear infinite;
-    position: relative;
-}
-
-/* Um mini Mario correndo em cima da barra de progresso! */
-.progress-bar::after {
-    content: "M"; /* Se tivesse um sprite, colocaríamos em background-image */
-    position: absolute;
-    right: -10px;
-    top: -30px;
-    font-size: 1.5rem;
-    color: var(--mario-red);
-    text-shadow: 2px 2px 0 #000;
-    animation: mario-run-jump 0.5s infinite alternate steps(2);
-}
-
-/* ==========================================================================
-   [11] BADGES & ALERTS (Mushroom e Poison)
-   ========================================================================== */
-.badge {
-    display: inline-block;
-    padding: var(--sp-1) var(--sp-2);
-    font-size: 0.8rem;
-    border: 2px solid #FFF;
-    background-color: var(--yoshi-green);
-    color: #FFF;
-    text-shadow: 1px 1px 0 #000;
-    box-shadow: 2px 2px 0 #000;
-}
-
-.badge-1up { background-color: var(--yoshi-green); border-color: #FFF; animation: bounce-badge 1s infinite; }
-.badge-star { background-color: var(--smw-star-yellow); color: #000; animation: star-power-flash 0.5s infinite steps(2); text-shadow: none; }
-
+   [9] ALERTAS (Entrada com Mola)
+   ========================================================================= */
 .alert {
-    padding: var(--sp-3);
-    margin-bottom: var(--sp-4);
-    border: calc(var(--pixel) * 1) solid #FFF;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #FFF;
-    display: flex;
-    align-items: center;
-    gap: var(--sp-3);
-    box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+    padding: var(--sp-3) var(--sp-5); margin-bottom: var(--sp-4); border: 4px solid #000; border-radius: 4px; display: flex; align-items: center; justify-content: center; gap: var(--sp-3); font-family: var(--font-snes-text); font-size: 1.5rem; box-shadow: 8px 8px 0 rgba(0,0,0,0.6); width: 100%; max-width: 800px; text-align: center;
+    animation: slide-in-bounce 0.7s var(--spring-bounce) both; will-change: transform;
 }
-
-/* Alerta de Dano (Estilo acertado por um casco de Koopa) */
-.alert-damage { border-color: var(--mario-red); background-color: rgba(248, 56, 0, 0.2); animation: screen-shake 0.3s steps(3); }
-/* Alerta de Vida Extra (1-UP) */
-.alert-1up { border-color: var(--yoshi-green); background-color: rgba(88, 216, 84, 0.2); }
-.alert-1up::before { content: "1-UP"; font-size: 1.2rem; color: var(--yoshi-green); text-shadow: 2px 2px 0 #000; animation: float-up 1s infinite; }
+.alert-error { background-color: rgba(229, 37, 33, 0.95); color: #FFF; border-color: #FFF; text-shadow: 3px 3px 0 #000; animation: slide-in-bounce 0.7s var(--spring-bounce) both, screen-shake 0.4s ease-in-out 0.7s; }
+.alert-success { background-color: rgba(67, 176, 71, 0.95); color: #FFF; border-color: #FFF; text-shadow: 3px 3px 0 #000; }
 
 /* ==========================================================================
-   [12] NAVIGATION & HUD (O Topo da Tela do Mario)
-   ========================================================================== */
-.snes-hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: var(--sp-3) var(--sp-6);
-    background-color: rgba(0, 0, 0, 0.7); /* HUD semi-transparente preto */
-    border-bottom: calc(var(--pixel) * 1) solid var(--ui-border-gold);
-    margin-bottom: var(--sp-6);
-    position: sticky;
-    top: 0;
-    z-index: var(--z-ui);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
+   [10] MODAIS (Impacto Realista)
+   ========================================================================= */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: var(--z-modal); display: flex; justify-content: center; align-items: center; padding: var(--sp-4); animation: fade-in 0.3s ease-out; }
 
-.hud-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.modal-content {
+    background-color: var(--ui-bg); border: 8px solid var(--ui-danger); border-radius: 12px; padding: var(--sp-6); max-width: 600px; width: 100%; text-align: center;
+    box-shadow: inset 0 0 0 6px #000, 0 0 70px rgba(229, 37, 33, 0.7), 20px 20px 0 rgba(0,0,0,0.9);
+    display: flex; flex-direction: column; align-items: center;
+    animation: modal-slam 0.6s var(--spring-bounce) both; will-change: transform;
 }
-
-.hud-title {
-    font-size: 0.8rem;
-    color: #FFF;
-    margin-bottom: var(--sp-1);
-    letter-spacing: 2px;
-}
-
-.hud-value {
-    font-size: 1.5rem;
-    color: var(--smw-coin-gold);
-    text-shadow: 2px 2px 0 #000;
-}
-
-.hud-score .hud-value { color: #FFF; }
-.hud-time .hud-value { color: var(--smw-star-yellow); }
-/* Moedas (Sx 99) */
-.hud-coins .hud-value::before {
-    content: "O×"; /* Substituindo o ícone de moeda */
-    color: var(--smw-coin-gold);
-    animation: coin-spin-text 0.8s infinite steps(2);
-}
+.modal-icon-danger { font-size: 6rem; animation: pulse-danger 0.8s ease-in-out infinite alternate; margin-bottom: var(--sp-3); }
 
 /* ==========================================================================
-   [13] PURE CSS ART & DECORATIONS (Magia 16-bit)
-   ========================================================================== */
+   [11] UTILITÁRIOS & SCROLL
+   ========================================================================= */
+.nav-actions { display: flex; justify-content: center; align-items: center; margin-bottom: var(--sp-5); background: rgba(0,0,0,0.6); padding: var(--sp-3) var(--sp-5); border-radius: 8px; border: 3px solid var(--smw-cloud); width: 100%; max-width: 800px; text-align: center; gap: var(--sp-4); transition: transform 0.4s var(--smooth-glide); }
+.nav-actions:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.nav-actions h2 { margin-bottom: 0; font-size: 2rem; border-bottom: none; width: auto; padding-bottom: 0;}
+.divider-level { height: 20px; width: 100%; max-width: 800px; background: repeating-linear-gradient(90deg, var(--mario-red), var(--mario-red) 40px, #FFF 40px, #FFF 80px); border: 5px solid #000; margin: var(--sp-6) auto; box-shadow: 0 6px 0 rgba(0,0,0,0.6); }
 
-/* A Famosa Starman (Estrela da Invencibilidade) com Cores Piscando */
-.starman {
-    width: 0; 
-    height: 0; 
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-bottom: 50px solid var(--smw-star-yellow);
-    position: relative;
-    margin: 50px auto;
-    animation: star-power-bg 0.5s infinite steps(4), coin-bounce-text 0.5s infinite alternate;
-}
-.starman::after {
-    content: "";
-    position: absolute;
-    top: 25px;
-    left: -25px;
-    width: 0; 
-    height: 0; 
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-top: 50px solid var(--smw-star-yellow);
-    animation: star-power-border 0.5s infinite steps(4);
-}
+::-webkit-scrollbar { width: 20px; }
+::-webkit-scrollbar-track { background: #000; border-left: 4px solid var(--smw-pipe-dark); }
+::-webkit-scrollbar-thumb { background-color: var(--smw-pipe-green); border: 4px solid #000; box-shadow: inset 4px 0 0 #A8FFA8, inset -4px 0 0 var(--smw-pipe-dark); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background-color: var(--smw-star-yellow); box-shadow: inset 4px 0 0 #FFF, inset -4px 0 0 #D8A800; }
 
 /* ==========================================================================
-   [14] KEYFRAMES (As Animações Mágicas do SNES)
-   ========================================================================== */
-
-@keyframes scroll-clouds {
-    0% { background-position: 0 0, 50px 50px, 100px 20px; }
-    100% { background-position: -400px 0, -350px 50px, -300px 20px; }
-}
-
-@keyframes coin-spin {
-    0% { transform: translateY(-50%) scaleX(1); }
-    25% { transform: translateY(-50%) scaleX(0.5); }
-    50% { transform: translateY(-50%) scaleX(0.1); }
-    75% { transform: translateY(-50%) scaleX(0.5); }
-    100% { transform: translateY(-50%) scaleX(1); }
-}
-
-@keyframes coin-spin-text {
-    0%, 100% { content: "O×"; }
-    50% { content: "I×"; }
-}
-
-@keyframes question-block-flash {
-    0%, 100% { background-color: var(--smw-question-yellow); }
-    33% { background-color: #FFB838; } /* Cor um pouco mais alaranjada */
-    66% { background-color: #F87800; } /* Laranja escuro */
-}
-
-@keyframes star-road-gradient {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
-}
-
-@keyframes mario-run-jump {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
-}
-
-@keyframes bounce-badge {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
-@keyframes float-up {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-20px); opacity: 0; }
-}
-
-@keyframes screen-shake {
-    0% { transform: translate(10px, 10px); }
-    25% { transform: translate(-10px, -10px); }
-    50% { transform: translate(10px, -10px); }
-    75% { transform: translate(-10px, 10px); }
-    100% { transform: translate(0, 0); }
-}
-
-@keyframes star-power-flash {
-    0% { color: #FFF; background-color: #F83800; }
-    25% { color: #000; background-color: #F8D820; }
-    50% { color: #FFF; background-color: #00A800; }
-    75% { color: #000; background-color: #0058F8; }
-    100% { color: #FFF; background-color: #F8B8F8; }
-}
-
-@keyframes star-power-bg {
-    0% { border-bottom-color: #F83800; }
-    25% { border-bottom-color: #F8D820; }
-    50% { border-bottom-color: #00A800; }
-    75% { border-bottom-color: #0058F8; }
-    100% { border-bottom-color: #F8B8F8; }
-}
-
-@keyframes star-power-border {
-    0% { border-top-color: #F83800; }
-    25% { border-top-color: #F8D820; }
-    50% { border-top-color: #00A800; }
-    75% { border-top-color: #0058F8; }
-    100% { border-top-color: #F8B8F8; }
-}
-
-@keyframes pulse-switch {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
+   [12] KEYFRAMES (GPU Otimizados)
+   ========================================================================= */
+@keyframes scroll-clouds { 0% { transform: translateX(0); } 100% { transform: translateX(-50vw); } }
+@keyframes float-title { 0%, 100% { transform: translateY(0) rotate(-1.5deg); text-shadow: 6px 6px 0 #000, 0 0 30px rgba(248, 216, 32, 0.5); } 50% { transform: translateY(-15px) rotate(1.5deg) scale(1.02); text-shadow: 8px 25px 0 #000, 0 15px 50px rgba(248, 216, 32, 0.8); } }
+@keyframes coin-spin { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0); filter: brightness(1.8) drop-shadow(0 0 10px var(--smw-coin-gold)); } }
+@keyframes star-power-flash { 0% { filter: hue-rotate(0deg) brightness(1); } 50% { filter: hue-rotate(180deg) brightness(2.5) drop-shadow(0 0 20px #FFF); } 100% { filter: hue-rotate(360deg) brightness(1); } }
+@keyframes screen-shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(12px) rotate(1deg); } 40%, 80% { transform: translateX(-12px) rotate(-1deg); } }
+@keyframes float-ghost { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(0, -25px) scale(1.1) rotate(5deg); filter: drop-shadow(0 20px 5px rgba(0,0,0,0.2)); } }
+@keyframes modal-slam { 0% { transform: scale(1.5) translateY(-100vh) rotate(-10deg); opacity: 0; } 100% { transform: scale(1) translateY(0) rotate(0deg); opacity: 1; } } /* Queda brusca elástica */
+@keyframes pulse-danger { 0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(229, 37, 33, 0.5)); } 100% { transform: scale(1.2) translateY(-10px); filter: drop-shadow(0 20px 40px rgba(229, 37, 33, 1)); } }
+@keyframes slide-in-bounce { 0% { transform: translateY(-100px) scale(0.8); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+@keyframes icon-wiggle { 0%, 100% { transform: translateY(-6px) rotate(0deg) scale(1.4); } 25% { transform: translateY(-6px) rotate(-20deg) scale(1.4); } 75% { transform: translateY(-6px) rotate(20deg) scale(1.4); } }
 
 /* ==========================================================================
-   [15] MODALS (COURSE CLEAR! / GAME OVER)
-   ========================================================================== */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(4px);
+   [13] MEDIA QUERIES
+   ========================================================================= */
+@media (min-width: 768px) { .snes-hud { flex-direction: row; justify-content: space-between; gap: var(--sp-3);} .hud-item { align-items: flex-start; text-align: left;} }
+@media (max-width: 767px) {
+    body { font-size: 1.1rem; padding-bottom: 110px; }
+    h1 { margin-top: var(--sp-2); font-size: 2.2rem;}
+    .snes-hud { flex-direction: column; gap: var(--sp-3); padding: var(--sp-2) var(--sp-3);}
+    .hud-item { flex-direction: row; gap: var(--sp-2); align-items: center;}
+    .nav-actions, .jogo-acoes { flex-direction: column; gap: var(--sp-3); }
+    .btn { width: 100%; max-width: 400px; margin: 0 auto;}
+    .jogos-grid { grid-template-columns: 1fr; gap: var(--sp-4); max-width: 450px;}
+    .jogo-card:hover .jogo-capa { height: 350px; } 
+    .chao-retro { height: 60px; background-size: 30px 30px; border-top-width: 6px; }
+    .form-control, .file-custom-btn { font-size: 1.2rem;}
 }
-
-.modal-mario {
-    background-color: #000;
-    border: calc(var(--pixel) * 2) solid #FFF;
-    padding: var(--sp-6);
-    text-align: center;
-    max-width: 90%;
-    width: 600px;
-    box-shadow: 
-        0 0 0 calc(var(--pixel) * 2) var(--mario-red),
-        0 0 40px var(--mario-red);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Confetes na tela de Course Clear */
-.modal-mario::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: 
-        radial-gradient(circle at 10% 20%, #F83800 4px, transparent 5px),
-        radial-gradient(circle at 80% 40%, #00A800 4px, transparent 5px),
-        radial-gradient(circle at 40% 80%, #0058F8 4px, transparent 5px),
-        radial-gradient(circle at 90% 90%, #F8D820 4px, transparent 5px);
-    background-size: 100px 100px;
-    opacity: 0.5;
-    animation: scroll-clouds 5s linear infinite;
-}
-
-.modal-title-clear {
-    color: var(--smw-coin-gold);
-    font-size: 3rem;
-    margin-bottom: var(--sp-4);
-    text-shadow: 4px 4px 0 #F83800;
-    position: relative;
-    z-index: 2;
-}
-
-.modal-text {
-    font-size: 1.5rem;
-    color: #FFF;
-    margin-bottom: var(--sp-5);
-    position: relative;
-    z-index: 2;
-}
-
-/* ==========================================================================
-   [16] SISTEMA DE GRID & UTILITIES
-   ========================================================================== */
-.container {
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 var(--sp-4);
-    position: relative;
-    z-index: var(--z-base);
-}
-
-.d-flex { display: flex; }
-.d-grid { display: grid; }
-.flex-column { flex-direction: column; }
-.align-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.justify-center { justify-content: center; }
-.text-center { text-align: center; }
-
-/* Grid de Imagens dos Itens 256px */
-.grid-items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: var(--sp-5);
-    justify-items: center;
-    align-items: center;
-}
-
-.mt-1 { margin-top: var(--sp-2); }
-.mt-2 { margin-top: var(--sp-4); }
-.mt-3 { margin-top: var(--sp-6); }
-.mb-1 { margin-bottom: var(--sp-2); }
-.mb-2 { margin-bottom: var(--sp-4); }
-.mb-3 { margin-bottom: var(--sp-6); }
-
-/* Separador de Vinhas (Beanstalk) */
-.divider-vine {
-    width: 100%;
-    height: 32px;
-    background-color: transparent;
-    background-image: 
-        radial-gradient(circle at 10px 16px, var(--yoshi-green) 10px, transparent 11px),
-        radial-gradient(circle at 22px 16px, var(--smw-pipe-dark) 10px, transparent 11px);
-    background-size: 32px 32px;
-    margin: var(--sp-6) 0;
-    border: none;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.3);
-}
-
-/* ==========================================================================
-   [17] SCROLLBAR (Tema do Cano Verde!)
-   ========================================================================== */
-::-webkit-scrollbar {
-    width: 24px;
-}
-
-::-webkit-scrollbar-track {
-    background: #000;
-    border-left: 4px solid var(--smw-pipe-dark);
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--smw-pipe-green);
-    border: 4px solid #000;
-    box-shadow: inset 4px 0 0 #A8FFA8, inset -4px 0 0 var(--smw-pipe-dark);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: var(--smw-star-yellow);
-    box-shadow: inset 4px 0 0 #FFF, inset -4px 0 0 #D8A800;
-}
-
-/* ==========================================================================
-   [18] DECORADORES BÔNUS (Efeitos Mágicos)
-   ========================================================================== */
-/* Adicione esta classe a qualquer elemento para aplicar o poder da estrela! */
-.power-star-active {
-    animation: star-power-flash 0.2s infinite steps(2) !important;
-    transform: scale(1.1);
-    box-shadow: 0 0 20px var(--smw-star-yellow) !important;
-}
-
-/* O item escondido no bloco */
-.hidden-1up {
-    color: transparent;
-    transition: color 0.1s;
-}
-.hidden-1up:hover {
-    color: var(--yoshi-green);
-    text-shadow: 2px 2px 0 #000;
-    animation: float-up 1s forwards;
-}
-
-/* FIM DO CÓDIGO - COURSE CLEAR! */
-
-/* ==========================================================================
-   SMW-CSS: SUPER MARIO WORLD - 16-BIT EDITION 🍄⭐🦖
-   Versão: 1990.SNES | Foco: Cores, Fontes e Ícones Temáticos
-   ========================================================================== */
-
-/* Importando Fontes 16-bit do Google Fonts */
-/* VT323: Perfeita para os textos de status e menus clássicos */
-/* Pixelify Sans: Excelente para títulos grandes */
-@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=VT323&display=swap');
-
-/* ==========================================================================
-   [1] TOKENS & VARIABLES - MUSHROOM KINGDOM PALETTE
-   ========================================================================== */
-:root {
-    /* O Mundo (Cenários e Natureza) */
-    --smw-sky: #5C94FC;
-    --smw-cloud: #FFFFFF;
-    --smw-ground-top: #00A800;
-    --smw-ground-dirt: #C84C0C;
-    --smw-pipe-green: #00E800;
-    --smw-pipe-dark: #008800;
-    
-    /* Os Blocos e Itens */
-    --smw-coin-gold: #F8D820;
-    --smw-coin-shadow: #E88800;
-    --smw-brick-brown: #FC9838;
-    --smw-brick-dark: #B85800;
-    --smw-question-yellow: #FCFC00;
-    --smw-star-yellow: #FFF858;
-
-    /* Os Heróis e Inimigos */
-    --mario-red: #F83800;
-    --mario-blue: #0058F8;
-    --yoshi-green: #58D854;
-    --peach-pink: #F8B8F8;
-
-    /* Interface (Status Bar SMW) */
-    --ui-bg: #000000;
-    --ui-text-white: #FFFFFF;
-    --ui-text-shadow: #555555;
-    --ui-border-gold: #F8D820;
-    
-    /* Tipografia de SNES Atualizada */
-    --font-snes-title: 'Pixelify Sans', sans-serif;
-    --font-snes-text: 'VT323', monospace;
-    
-    /* Grid e Escala 16-bit */
-    --pixel: 4px;
-    --sp-1: calc(var(--pixel) * 2);
-    --sp-2: calc(var(--pixel) * 4);
-    --sp-3: calc(var(--pixel) * 6);
-    --sp-4: calc(var(--pixel) * 8);
-    --sp-6: calc(var(--pixel) * 12);
-}
-
-/* ==========================================================================
-   [2] RESET & ENGINE BASE
-   ========================================================================== */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    image-rendering: pixelated;
-}
-
-body {
-    font-family: var(--font-snes-text); /* Fonte base VT323 para corpo do texto */
-    font-size: 20px; /* Aumentado levemente porque a VT323 é estreita */
-    background-color: var(--smw-sky);
-    color: var(--ui-text-white);
-    line-height: 1.2;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    text-transform: uppercase;
-    cursor: crosshair;
-    padding-bottom: 120px;
-}
-
-/* Aplicando a fonte de Título */
-h1, h2, h3, h4, h5, h6, .btn, .hud-value {
-    font-family: var(--font-snes-title);
-    letter-spacing: 2px;
-}
-
-h1 { font-size: 3.5rem; color: var(--smw-coin-gold); text-align: center; text-shadow: 4px 4px 0 #000; animation: coin-bounce-text 2s infinite; }
-h2 { font-size: 2.5rem; color: var(--mario-red); text-shadow: 3px 3px 0 #000; }
-
-/* ==========================================================================
-   [NOVO] SISTEMA DE ÍCONES 16-BIT (SMW Sprites Baseados em Emojis)
-   Transforma emojis normais em ícones pixelados com sombra dura.
-   ========================================================================== */
-.smw-icon {
-    display: inline-block;
-    font-style: normal;
-    font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
-    line-height: 1;
-    /* O truque para o visual 16-bit: sombra projetada dura que imita o contorno do sprite */
-    filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.8));
-    transform: translateY(2px);
-    margin-right: var(--sp-2);
-}
-
-/* Variações de Ícones do Universo Mario */
-.icon-mushroom::before { content: "🍄"; }
-.icon-star::before { content: "⭐"; animation: star-power-flash 0.5s infinite steps(2); }
-.icon-fireflower::before { content: "🌻"; filter: drop-shadow(2px 2px 0px #000) hue-rotate(-30deg) saturate(2); }
-.icon-coin::before { content: "🪙"; animation: coin-spin 0.8s infinite steps(4); }
-.icon-yoshi::before { content: "🦖"; filter: drop-shadow(2px 2px 0px #000) hue-rotate(90deg); /* Transforma o T-Rex em Yoshi verde */ }
-.icon-boo::before { content: "👻"; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5)); }
-.icon-castle::before { content: "🏰"; }
-.icon-key::before { content: "🗝️"; color: var(--smw-coin-gold); }
-.icon-feather::before { content: "🪶"; filter: drop-shadow(2px 2px 0px #000) sepia(1) hue-rotate(-50deg) saturate(3); /* Capa amarela */ }
-
-/* Ícones Grandes para destaque */
-.smw-icon.lg {
-    font-size: 2.5rem;
-    filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.8));
-}
-
-/* ==========================================================================
-   [ATUALIZAÇÃO] BOTÕES COM ÍCONES
-   ========================================================================== */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--sp-2);
-    font-family: var(--font-snes-title);
-    font-size: 1.5rem;
-    background-color: var(--mario-red);
-    color: #FFF;
-    border: calc(var(--pixel) * 1) solid #000;
-    border-radius: calc(var(--pixel) * 2);
-    box-shadow: inset -4px -4px 0 #880000, inset 4px 4px 0 #FF8888, 4px 4px 0 rgba(0,0,0,0.5);
-    text-shadow: 2px 2px 0 #000;
-    padding: var(--sp-3) var(--sp-5);
-    cursor: pointer;
-}
-
-/* Exemplo de uso: <button class="btn"><i class="smw-icon icon-yoshi"></i> MONTAR</button> */
-
-/* ==========================================================================
-   [ATUALIZAÇÃO] HUD COM FONTES E ÍCONES REAIS
-   ========================================================================== */
-.snes-hud {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: var(--sp-3) var(--sp-6);
-    background-color: rgba(0, 0, 0, 0.8); 
-    border-bottom: calc(var(--pixel) * 1) solid var(--ui-border-gold);
-}
-
-.hud-title {
-    font-family: var(--font-snes-text);
-    font-size: 1.2rem;
-    color: #FFF;
-    margin-bottom: calc(var(--pixel) * 1);
-    letter-spacing: 2px;
-}
-
-.hud-value {
-    font-family: var(--font-snes-title);
-    font-size: 2rem;
-    color: #FFF;
-    text-shadow: 3px 3px 0 #000;
-}
-
-.hud-time .hud-value { color: var(--smw-star-yellow); }
-
-.hud-coins {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
-}
-
-/* Trocando o "O" por um ícone animado realista */
-.hud-coins::before {
-    content: "🪙";
-    font-size: 1.5rem;
-    animation: coin-spin 0.8s infinite steps(4);
-    filter: drop-shadow(2px 2px 0px #000);
-}
+/* FIM DO CÓDIGO - COURSE CLEAR! 🚩 */

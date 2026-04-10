@@ -3,12 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Meu Sistema Legal - SMW Edition</title>
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Meu sistema legal!</h1>
-    {% block conteudo %}
-    {% endblock %}
+    
+    <nav class="snes-hud">
+        <div class="hud-item">
+            <span class="hud-title">SISTEMA</span>
+            <a href="jogos.php" style="border: none; text-shadow: none;">
+                <span class="hud-value">LEGAL</span>
+            </a>
+        </div>
+        
+        <div class="hud-item hud-coins">
+            <span class="hud-value">x99</span>
+        </div>
+        
+        <div class="hud-item hud-world">
+            <span class="hud-title">WORLD</span>
+            <span class="hud-value" style="color: var(--yoshi-green);">CRUD</span>
+        </div>
+        
+        <div class="hud-item hud-time">
+            <span class="hud-title">TIME</span>
+            <span class="hud-value">999</span>
+        </div>
+    </nav>
+
+    <main>
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+    
 </body>
 </html>

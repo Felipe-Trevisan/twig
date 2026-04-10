@@ -1,23 +1,70 @@
-{% extends "_base.html" %} {% block conteudo %}
-<h3>Inserir Jogos</h3>
-<hr>
-<br>
-{% if erro %}
-<img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2Z5ejBlMDQ0amY0c2p4NWFwMnl2ZHN3dW9tM2wwczIxcXFuYWI0ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10NNJitHXAZnqw/200.gif" alt="">
-<p style="color:red">{{ erro }}</p>
-<img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyc2Z5ejBlMDQ0amY0c2p4NWFwMnl2ZHN3dW9tM2wwczIxcXFuYWI0ZiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10NNJitHXAZnqw/200.gif" alt="">
+{% extends "_base.html" %} 
 
-{% endif %}
-<form action="jogos_inserir.php" method="post" enctype="multipart/form-data">
-  <input type="text" name="nome" placeholder="Nome" />
-  Estilo:<select name="estilo">
-    <option value="acao">Ação</option>
-    <option value="tiro">Tiro</option>
-    <option value="rpg">RPG</option>
-  </select>
-  <br>
-  Capa: <input type="file" name="capa">
-  <br>
-  <input type="submit" value="Gravar">
-</form>
+{% block conteudo %}
+<div class="container mt-2">
+    
+    <div class="header-main">
+        <h1><i class="smw-icon icon-add"></i> Novo Jogo</h1>
+    </div>
+
+    <div class="divider-level"></div>
+
+    {% if erro %}
+    <div class="alert alert-error">
+        <i class="smw-icon icon-boo"></i>
+        <span><strong>Cuidado!</strong> {{ erro }}</span>
+    </div>
+    {% endif %}
+
+    <form action="jogos_inserir.php" method="post" enctype="multipart/form-data" class="form-crud">
+        
+        <div class="form-group">
+            <label class="form-label" for="nome">
+                <i class="smw-icon icon-coin"></i> Nome do Jogo
+            </label>
+            <input type="text" name="nome" id="nome" class="form-control" placeholder="Ex: Super Mario World" />
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="estilo">
+                <i class="smw-icon icon-fireflower"></i> Estilo
+            </label>
+            <select name="estilo" id="estilo" class="form-control">
+                <option value="acao">Ação</option>
+                <option value="tiro">Tiro</option>
+                <option value="rpg">RPG</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="lancamento">
+              <i class="smw-icon icon-castle"></i> Data de Lançamento
+        </div>
+          <input type="date" name="lancamento" id="lancamento" class="form-control" />
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">
+                <i class="smw-icon icon-star"></i> Capa do Jogo
+            </label>
+            
+            <div class="form-file-wrapper">
+                <div class="file-custom-btn">
+                    <i class="smw-icon icon-add"></i> Selecionar Imagem...
+                </div>
+                <input type="file" name="capa" id="capa" accept="image/*">
+            </div>
+        </div>
+        
+        <div class="nav-actions mt-3" style="justify-content: flex-end; background: transparent; border: none; padding: 0;">
+            <a href="jogos.php" class="btn btn-warning" style="margin-right: var(--sp-3);">
+                Voltar
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="smw-icon icon-save"></i> Gravar
+            </button>
+        </div>
+
+    </form>
+</div>
 {% endblock %}

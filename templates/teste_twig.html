@@ -1,28 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Twig</title>
+    <title>Aventura Twig - Status</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Bom dia</h1>
-    <hr>
-    <p>Olá {{ nome|upper }}. Você tem cabelo?</p>
-    <p>
-        {% if legal %}
-            Saci você vai me liberar da floresta?
-        {% else %}
-            Sim
-        {% endif %}
-    </p>
-    <p>
-        <ul>
-            {% for disc in disciplinas %}
-            <li>{{ disc }}</li>
-            {% endfor %}
-        </ul>
-        {{poema|nl2br}}
-    </p>
+    <div class="container mt-3">
+        
+        <div class="panel">
+            
+            <div class="header-main">
+                <h1><i class="smw-icon icon-star"></i> Bom dia!</h1>
+            </div>
+            
+            <p style="text-align: center;">
+                <i class="smw-icon icon-yoshi"></i> Olá, <strong style="color: var(--smw-coin-gold);">{{ nome|upper }}</strong>. Você tem cabelo?
+            </p>
+
+            <div class="divider-level"></div>
+
+            <div class="alert" style="background-color: rgba(0,0,0,0.6); border-color: var(--mario-blue); justify-content: center;">
+                <i class="smw-icon icon-boo"></i>
+                <p style="margin: 0;">
+                    {% if legal %}
+                        Saci, você vai me liberar da floresta?
+                    {% else %}
+                        Sim! A passagem está livre!
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="jogos-grid" style="grid-template-columns: 1fr 1fr; margin-top: var(--sp-4);">
+                
+                <div class="form-crud" style="border-color: var(--smw-pipe-green);">
+                    <h3><i class="smw-icon icon-mushroom"></i> Disciplinas</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        {% for disc in disciplinas %}
+                        <li style="margin-bottom: var(--sp-2); font-family: var(--font-snes-text); font-size: 1.2rem;">
+                            <i class="smw-icon icon-coin"></i> {{ disc }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="form-crud" style="border-color: var(--peach-pink);">
+                    <h3><i class="smw-icon icon-feather"></i> Poema</h3>
+                    <p style="color: var(--smw-cloud); line-height: 1.8;">
+                        {{ poema|nl2br }}
+                    </p>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
 </body>
 </html>

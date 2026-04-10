@@ -1,19 +1,36 @@
 {% extends "_base.html" %} 
 
 {% block conteudo %}
-<h2>Excluir Jogo</h2>
-<h3>Você está excluindo o jogo {{ jogo.nome }}</h3>
-<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXVvZHVrdWMxdDhuZzhwcGh0OWpmdHY3eHk3czlxaTdyYnNlbjNjMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4ygSevvOQY7a9uiXqi/giphy.gif" alt="">
-<br>
-Você tem certeza? não pode desfazer!
-<br>
+<div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+    
+    <div class="modal-content">
+        
+        <i class="smw-icon icon-boo modal-icon-danger"></i>
+        
+        <h1 style="color: var(--ui-danger); font-size: 3rem; text-shadow: 3px 3px 0 #000;">GAME OVER?</h1>
+        
+        <h2 style="font-size: 1.5rem; color: var(--smw-cloud); margin-bottom: var(--sp-3);">
+            Você está prestes a excluir o jogo<br>
+            <span style="color: var(--smw-coin-gold); font-size: 2rem;">{{ jogo.nome }}</span>
+        </h2>
+        
+        <p style="color: #FFB8B8; margin-bottom: var(--sp-4);">
+            <strong>Cuidado!</strong> Você tem certeza? Essa ação não pode ser desfeita e o jogo sumirá para sempre!
+        </p>
 
-<div>
-<form action="jogos_excluir.php" method="post">
-<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmsyOXZlYzdmdGE5ZmhjZnl0dXg5bzZjZTM1dHBtN2Y5bDJ1dDEyaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AnUAceSSS6gZa/giphy.gif" alt="">
-<input type="hidden" name="id" value="{{ jogo.id }}">
-<input type="submit" value="Apagar para sempre" style="background-color: red; padding: 5px; font-size: 26px; color: white;">
-</form>
-<a href="jogos.php">Sou órfão</a>
+        <div class="modal-actions">
+            <a href="jogos.php" class="btn btn-secondary">
+                Sou órfão (Voltar)
+            </a>
+            
+            <form action="jogos_excluir.php" method="post" style="margin: 0; width: 100%;">
+                <input type="hidden" name="id" value="{{ jogo.id }}">
+                <button type="submit" class="btn btn-danger">
+                    <i class="smw-icon icon-delete"></i> Apagar para sempre
+                </button>
+            </form>
+        </div>
+        
+    </div>
 </div>
 {% endblock %}
